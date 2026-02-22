@@ -220,7 +220,6 @@ function extractJobDetails(
           "0",
           encodedMultiSendData,
           "1",
-          userAddress,
         ];
         console.log(
           "[extractJobDetails] Updated argsArray for Safe execution:",
@@ -1633,6 +1632,10 @@ export const JobFormProvider: React.FC<{ children: React.ReactNode }> = ({
       );
       // Always append args, even if empty array
       params.append("args", JSON.stringify(argsToSend));
+      // For safe jobs, pass the user's wallet address as job_owner_address
+      if (jobDetails.is_safe && jobDetails.user_address) {
+        params.append("job_owner_address", jobDetails.user_address);
+      }
 
       devLog("Fetching fee estimation with params:", {
         ipfs_url: codeUrls,
